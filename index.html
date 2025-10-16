@@ -1,9 +1,9 @@
-<html><body>
-<h1>Upload Image:</h1>
-<form action="/image_upload.php">
-    <label for="myfile">Select your file</label>
-    <input type="file" id="myimage" name="myimage">
-    <br>
-    <input type="submit" value="Submit Image">
-</form>
-</body></html>
+<html>
+<body>
+    <form action="image_upload.php" method="POST" enctype="multipart/form-data">
+        <label for="myimage">Choose an image:</label>
+        <input type="file" id="myimage" name="myimage" accept="image/*">
+        <button type="submit">Upload and Display</button>
+    </form>
+</body>
+</html>
