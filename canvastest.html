@@ -1,0 +1,56 @@
+<html>
+  <body>
+    <img
+      id="scream"
+      src="img_the_scream.jpg"
+      alt="The Scream"
+      style="display: none"
+    />
+    <h1>whatever</h1>
+
+    <canvas
+      id="myCanvas"
+      width="250"
+      height="300"
+      onmousemove="showCoords(event)"
+    >
+    </canvas>
+    <p id="demo">Coordinates:</p>
+    <p id="rgb">RGB:</p>
+
+    <script>
+      function myCanvas() {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        var img = document.getElementById("scream");
+
+        ctx.canvas.width = img.width;
+        ctx.canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+      }
+
+      function showCoords(event) {
+        // Coords
+        let x = event.offsetX;
+        let y = event.offsetY;
+        let text = "X coords: " + x + ", Y coords: " + y;
+        document.getElementById("demo").innerHTML = text;
+
+        // RGB
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+
+        var pixelData = ctx.getImageData(x, y, 1, 1).data;
+
+        var r = pixelData[0];
+        var g = pixelData[1];
+        var b = pixelData[2];
+
+        var rgbText = "RGB: (" + r + ", " + g + ", " + b + ")";
+        document.getElementById("rgb").innerHTML = rgbText;
+      }
+
+      window.onload = myCanvas;
+    </script>
+  </body>
+</html>
