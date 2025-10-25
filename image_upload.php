@@ -11,11 +11,6 @@ if (isset($_FILES['myimage'])) {
             $imageData = base64_encode(file_get_contents($file['tmp_name']));
             $src = 'data:' . $check['mime'] . ';base64,' . $imageData;
             echo '<img id="scream" src="' . $src . '" alt="The Scream" style="display: none" />';
-            echo "<h1>Your Uploaded Image:</h1>";
-            echo '<canvas id="myCanvas" onmousemove="showCoords(event)" style="border:1px solid black"></canvas>';
-            echo "<p>File: " . htmlspecialchars($file['name']) . "</p>";
-            echo "<p>Type: " . htmlspecialchars($check['mime']) . "</p>";
-            echo "<p>Size: " . htmlspecialchars($file['size']) . " bytes</p>";
         }
 
     } else {
@@ -25,75 +20,33 @@ if (isset($_FILES['myimage'])) {
     echo "No image was uploaded.";
 }
 ?>
+
 <html>
+    <a href="/CPS5745-Study2/">Go Back</a>
+<body  style="margin: auto; width: 80%; text-align: center">
+  <h1>Click and Drag to Select Pixels</h1>
 
-<body>
-    <p id="demo">Coordinates:</p>
-    <p id="rgb">RGB:</p>
+  <div style="max-height: 50%;">
+    <canvas id="myCanvas" onmousemove="showCoords(event)" onmousedown="mouseDown(event)" onmouseup="mouseUp(event)">
+    </canvas>
+  </div>
+  <p id="demo">Coordinates:</p>
+  <p id="rgb">RGB:</p>
+    <?php
+            echo "<p>File: " . htmlspecialchars($file['name']);
+            echo ", Type: " . htmlspecialchars($check['mime']);
+            echo ", Size: " . htmlspecialchars($file['size']) . " bytes</p>";
+    ?>
 
-    <div>
-        <label><input type="checkbox" id="redChannel" checked onchange="updateCanvas()"> Red</label>
-        <label><input type="checkbox" id="greenChannel" checked onchange="updateCanvas()"> Green</label>
-        <label><input type="checkbox" id="blueChannel" checked onchange="updateCanvas()"> Blue</label>
-    </div>
+  <h1>Percentage of RGB values in Pixels</h1>
+  <p id="chartText">Select Pixels to get Started</p>
+  <div style="max-height: 80%; margin: auto; display: flex; justify-content: center;">
+    <canvas id="myChart"></canvas>
+  </div>
 
-    <script>
-        function showCoords(event) {
-            // Coords
-            let x = event.offsetX;
-            let y = event.offsetY;
-            let text = "X coords: " + x + ", Y coords: " + y;
-            document.getElementById("demo").innerHTML = text;
-
-            // RGB
-            var canvas = document.getElementById("myCanvas");
-            var ctx = canvas.getContext("2d");
-
-            var pixelData = ctx.getImageData(x, y, 1, 1).data;
-
-            var r = pixelData[0];
-            var g = pixelData[1];
-            var b = pixelData[2];
-
-            var rgbText = "RGB: (" + r + ", " + g + ", " + b + ")";
-            document.getElementById("rgb").innerHTML = rgbText;
-        }
-
-        function myCanvas() {
-            var c = document.getElementById("myCanvas");
-            var ctx = c.getContext("2d");
-            var img = document.getElementById("scream");
-
-            ctx.canvas.width = img.width;
-            ctx.canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
-        }
-
-        function updateCanvas() {
-            var canvas = document.getElementById("myCanvas");
-            var ctx = canvas.getContext("2d");
-            var img = document.getElementById("scream");
-
-            ctx.drawImage(img, 0, 0);
-
-            var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            var data = imageData.data;
-
-            var redChannel = document.getElementById("redChannel").checked;
-            var greenChannel = document.getElementById("greenChannel").checked;
-            var blueChannel = document.getElementById("blueChannel").checked;
-
-            for (var i = 0; i < data.length; i += 4) {
-                data[i] = redChannel ? data[i] : 0;     // Red
-                data[i + 1] = greenChannel ? data[i + 1] : 0; // Green
-                data[i + 2] = blueChannel ? data[i + 2] : 0;  // Blue
-            }
-
-            ctx.putImageData(imageData, 0, 0);
-        }
-
-        window.onload = myCanvas;
-    </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="rgb-scripts.js"></script>
+  <script>window.onload = renderImage;</script>
 </body>
 
 </html>

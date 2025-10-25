@@ -81,7 +81,7 @@ function mouseDown(event) {
 function mouseUp(event) {
     let element = document.getElementById("chartText");
     element.innerHTML = "";
-    
+
     isMouseDown = false;
     var c = document.getElementById("myCanvas");
     var ctx = c.getContext("2d");
@@ -103,16 +103,6 @@ function processData(imageData) {
         greenTotal += imageData.data[i + 1];
         blueTotal += imageData.data[i + 2];
     }
-
-    var countText =
-        "RGB Pixel Counts: (" +
-        redTotal +
-        ", " +
-        greenTotal +
-        ", " +
-        blueTotal +
-        ")";
-    document.getElementById("counts").innerHTML = countText;
     createChart(redTotal, greenTotal, blueTotal);
 }
 
