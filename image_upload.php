@@ -50,6 +50,7 @@ if (isset($_FILES['myimage'])) {
     <label for="myimage">Save Data:</label>
     <input type="hidden" id="pixelData" name="pixelData" value=""> <!-- Hidden input -->
     <input type="hidden" id="imageSizeData" name="imageSizeData" value="">
+    <input type="hidden" id="fileName" name="fileName" value="<?php echo htmlspecialchars($file['name']);?>">
     <button type="submit">Save</button>
   </form>
 

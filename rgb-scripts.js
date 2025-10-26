@@ -17,9 +17,6 @@ function getMaxDimensions(img) {
   const maxHeight = window.innerHeight * 0.8;
   let scale = 1;
 
-  console.log(img.height);
-  console.log(maxHeight);
-
   if (img.width > maxWidth) {
     let widthScale = maxWidth / img.width;
     scale = widthScale;
@@ -28,7 +25,6 @@ function getMaxDimensions(img) {
     let heightScale = maxHeight / img.height;
     scale = Math.min(heightScale, scale);
   }
-  console.log(scale);
   return scale;
 }
 
@@ -85,12 +81,20 @@ function mouseUp(event) {
   isMouseDown = false;
   var c = document.getElementById("myCanvas");
   var ctx = c.getContext("2d");
+  ctx.clearRect(0, 0, c.width, c.height);
+  renderImage();
   const imageData = ctx.getImageData(
     firstX,
     firstY,
     event.offsetX - firstX,
     event.offsetY - firstY
   );
+  ctx.clearRect(0, 0, c.width, c.height);
+  renderImage();
+  x = event.offsetX - firstX;
+  y = event.offsetY - firstY;
+  ctx.rect(firstX, firstY, x, y);
+  ctx.stroke();
 
   // send stuff to HTML to go to PHP
   var pixelData = imageData.data;
@@ -102,6 +106,7 @@ function mouseUp(event) {
   document.getElementById("imageSizeData").value = imageDataJSON;
 
   processData(imageData);
+  console.log(imageData.data);
 }
 
 function processData(imageData) {
