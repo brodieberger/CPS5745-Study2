@@ -13,6 +13,14 @@ if (isset($_POST['pixelData'])) {
     $pixelData = json_decode($_POST['pixelData'], true);
     $imageSizeData = json_decode($_POST['imageSizeData'], true);
     $fileName = $_POST['fileName'];
+    
+    if (isset ($_POST['showOutput'])){
+        $showOutput = $_POST['showOutput'];
+    }
+    else{
+        $showOutput = false;
+    }
+    
     echo "Filename: " . $fileName;
 
 
@@ -31,7 +39,6 @@ if (isset($_POST['pixelData'])) {
     if (!$stmt) {
         die("Prepare failed: " . $conn->error);
     }
-
     for ($num = 0; $num < count($pixelData); $num += 4) {
         $r = $pixelData[$num];
         $g = $pixelData[$num + 1];
@@ -50,13 +57,16 @@ if (isset($_POST['pixelData'])) {
     
     echo count($pixelData) / 4 . " Pixels Found";
     
-    for ($num = 0, $pixelCount = 1; $num < count($pixelData); $num+= 4, $pixelCount ++){
-        echo "<br><b>Pixel " . $pixelCount . ":</b>";
-        echo " Red: " . $pixelData[$num];
-        echo " Green: " . $pixelData[$num+1];
-        echo " Blue: " . $pixelData[$num+2];
-        echo " Transparancy: " . $pixelData[$num+3];
+    if ($showOutput == true){
+        for ($num = 0, $pixelCount = 1; $num < count($pixelData); $num+= 4, $pixelCount ++){
+            echo "<br><b>Pixel " . $pixelCount . ":</b>";
+            echo " Red: " . $pixelData[$num];
+            echo " Green: " . $pixelData[$num+1];
+            echo " Blue: " . $pixelData[$num+2];
+            echo " Transparancy: " . $pixelData[$num+3];
+        }
     }
+
     
 } else {
     echo "No pixel data received.";

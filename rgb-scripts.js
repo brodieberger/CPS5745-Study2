@@ -83,18 +83,18 @@ function mouseUp(event) {
   var ctx = c.getContext("2d");
   ctx.clearRect(0, 0, c.width, c.height);
   renderImage();
+  x = event.offsetX - firstX;
+  y = event.offsetY - firstY;
   const imageData = ctx.getImageData(
     firstX,
     firstY,
-    event.offsetX - firstX,
-    event.offsetY - firstY
+    x,
+    y
   );
-  ctx.clearRect(0, 0, c.width, c.height);
-  renderImage();
-  x = event.offsetX - firstX;
-  y = event.offsetY - firstY;
   ctx.rect(firstX, firstY, x, y);
   ctx.stroke();
+
+  window.lastImageData = imageData;
 
   // send stuff to HTML to go to PHP
   var pixelData = imageData.data;
@@ -110,13 +110,23 @@ function mouseUp(event) {
 }
 
 function processData(imageData) {
+  var redCheckbox = document.getElementById("redCheckbox").checked;
+  var greenCheckbox = document.getElementById("greenCheckbox").checked;
+  var blueCheckbox = document.getElementById("blueCheckbox").checked;
+
   var redTotal = 0;
   var greenTotal = 0;
   var blueTotal = 0;
   for (let i = 0; i < imageData.data.length; i += 4) {
-    redTotal += imageData.data[i];
-    greenTotal += imageData.data[i + 1];
-    blueTotal += imageData.data[i + 2];
+    if (redCheckbox) {
+      redTotal += imageData.data[i];
+    }
+    if (greenCheckbox) {
+      greenTotal += imageData.data[i + 1];
+    }
+    if (blueCheckbox) {
+      blueTotal += imageData.data[i + 2];
+    }
   }
   createChart(redTotal, greenTotal, blueTotal);
 }
@@ -151,3 +161,21 @@ function createChart(redTotal, greenTotal, blueTotal) {
     },
   });
 }
+
+document.getElementById("redCheckbox").addEventListener("change", () => {
+  if (window.lastImageData) {
+    processData(window.lastImageData);
+  }
+});
+
+document.getElementById("greenCheckbox").addEventListener("change", () => {
+  if (window.lastImageData) {
+    processData(window.lastImageData);
+  }
+});
+
+document.getElementById("blueCheckbox").addEventListener("change", () => {
+  if (window.lastImageData) {
+    processData(window.lastImageData);
+  }
+});

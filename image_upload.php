@@ -30,6 +30,13 @@ if (isset($_FILES['myimage'])) {
     <canvas id="myCanvas" onmousemove="showCoords(event)" onmousedown="mouseDown(event)" onmouseup="mouseUp(event)">
     </canvas>
   </div>
+
+  <div>
+    <label><input type="checkbox" id="redCheckbox" checked> Red</label>
+    <label><input type="checkbox" id="greenCheckbox" checked> Green</label>
+    <label><input type="checkbox" id="blueCheckbox" checked> Blue</label>
+  </div>
+
   <p id="demo">Coordinates:</p>
   <p id="rgb">RGB:</p>
   <?php
@@ -52,6 +59,9 @@ if (isset($_FILES['myimage'])) {
     <input type="hidden" id="imageSizeData" name="imageSizeData" value="">
     <input type="hidden" id="fileName" name="fileName" value="<?php echo htmlspecialchars($file['name']);?>">
     <button type="submit">Save</button>
+    <label for="showOutput">Show Data:</label>
+    <input type="checkbox" id="showOutput" name="showOutput" value="true">
+
   </form>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
